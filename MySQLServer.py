@@ -12,7 +12,6 @@ except Exception as e:
 
 
 def get_db_config():
-    """Return connection config from environment variables with sensible defaults."""
     return {
         'host': os.environ.get('MYSQL_HOST', '127.0.0.1'),
         'user': os.environ.get('MYSQL_USER', 'root'),
@@ -22,14 +21,9 @@ def get_db_config():
 
 
 def create_database(cursor, db_name: str):
-    """Create a database using CREATE DATABASE IF NOT EXISTS (no SELECT/SHOW).
-
-    Prints a success message when created (or already exists without error).
-    """
     try:
-        sql = f"CREATE DATABASE IF NOT EXISTS `{db_name}` DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'"
+        sql = "CREATE DATABASE IF NOT EXISTS alx_book_store DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'"
         cursor.execute(sql)
-        # If the statement succeeded, we can assume DB exists/was created.
         print(f"Database '{db_name}' created successfully!")
     except mysql.connector.Error as err:
         print(f"Failed creating database: {err}")
@@ -42,14 +36,11 @@ def main():
 
     conn = None
     try:
-        # Connect to MySQL server (no database specified)
         conn = mysql.connector.connect(**config)
     except mysql.connector.Error as err:
-        # Print error message when failing to connect to the DB
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Error: Access denied. Check your username or password.")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            # This case shouldn't occur because we didn't specify a database, but keep for completeness
             print("Error: The specified database does not exist.")
         else:
             print(f"Error: Could not connect to MySQL server: {err}")
@@ -59,10 +50,8 @@ def main():
         cursor = conn.cursor()
         create_database(cursor, db_name)
     except Exception:
-        # If create_database re-raised, exit with error
         sys.exit(1)
     finally:
-        # Ensure cursor and connection are closed
         try:
             if cursor is not None:
                 cursor.close()
