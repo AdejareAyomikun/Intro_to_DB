@@ -19,7 +19,7 @@ CREATE TABLE Customers (
 ),
 CREATE TABLE Orders(
     order_id INT PRIMARY KEY,
-    customer_id FOREIGN KEY REFERENCES Customers(customer_id) ON DELETE CASCADE,
+    customer_id FOREIGN KEY(customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE,
     order_date DATE NOT NULL,
 ),
 CREATE TABLE Order_Details(
