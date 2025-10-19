@@ -4,6 +4,8 @@
 --   mysql -u root -p alx_book_store < .\task_3.sql
 --   mysql -u root -p -D alx_book_store < .\task_3.sql
 
+USE alx_book_store;
+
 SHOW TABLES;
 
 -- Alternative (uses INFORMATION_SCHEMA) if you prefer a SELECT result:
